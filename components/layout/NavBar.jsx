@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Avatar from '@mui/material/Avatar';
+import Avatar from "@mui/material/Avatar";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { setAuthentication, setUser } from "../../redux/reducers/authReducer";
 // import { useNavigate } from "react-router-dom";
 export default function NavBar() {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const [showUserDropDown, setShowUserDropDown] = useState(null);
   const open = Boolean(showUserDropDown);
   const handleClick = (event) => {
@@ -13,6 +18,32 @@ export default function NavBar() {
   const handleClose = () => {
     setShowUserDropDown(null);
   };
+  const handleLogout = () => {
+    // const res = await fetch("https://dummyjson.com/auth/login", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({
+    //     username: data.username,
+    //     password: data.password,
+    //     // expiresInMins: 60, // optional
+    //   }),
+    // })
+    // const userData = await res.json()
+    // console.log(await res.json())
+    // if(res.status===400){
+    //   return toast("Invalid Username or Password")
+    // }
+    // else if(res.status===200){
+    dispatch(setAuthentication(false));
+    dispatch(setUser(null));
+    // notify()
+    router.push(`/login`);
+    // }
+  };
+  
+  
+  const is_auth = useSelector((state) => state.authData.is_authenticated);
+  console.log(is_auth);
   // const navigate = useNavigate();
 
   return (
@@ -51,18 +82,19 @@ export default function NavBar() {
             </div>
           </form>
           {/* dropdown */}
+          {is_auth==false? null :
           <div className="">
-          <Avatar>
-            <Button
-              id="basic-button"
-              className="relative inline-flex items-center px-4 py-3 text-sm font-medium text-center text-white bg-gray-500 rounded-lg hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-            >
-             RK
-            </Button>
+            <Avatar>
+              <Button
+                id="basic-button"
+                className="relative inline-flex items-center px-4 py-3 text-sm font-medium text-center text-white bg-gray-500 rounded-lg hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+              >
+                RK
+              </Button>
             </Avatar>
             <Menu
               id="basic-menu"
@@ -74,10 +106,9 @@ export default function NavBar() {
               }}
             >
               <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
-          </div>
+          </div>}
         </div>
       </nav>
     </div>

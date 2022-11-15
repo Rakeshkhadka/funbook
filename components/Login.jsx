@@ -3,9 +3,13 @@ import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
-// import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+import { setAuthentication, setUser } from "../redux/reducers/authReducer";
 
 export default function Index() {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const notify = () => toast("LOGGED IN SUCCESSFULLY!");
   const {
     register,
@@ -23,12 +27,16 @@ export default function Index() {
         // expiresInMins: 60, // optional
       }),
     })
-    console.log(res)
+    const userData = await res.json()
+    // console.log(await res.json())
     if(res.status===400){
       return toast("Invalid Username or Password")
     }
-    else{
+    else if(res.status===200){
+      dispatch(setAuthentication(true))
+      dispatch(setUser(userData))
       notify()
+      router.push(`/`);
     }
   };
   //   const navigate = useNavigate();
@@ -38,7 +46,7 @@ export default function Index() {
         <main class="flex-1 flex items-center justify-center">
           <div class="rounded-lg sm:border-2 px-4 lg:px-24 py-16 lg:max-w-xl sm:max-w-md w-full text-center">
             <h1 class=" mb-6 font-bold text-gray-600 text-3xl tracking-wider">
-              Sign In
+              Log In
             </h1>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div class="py-2">
@@ -62,7 +70,7 @@ export default function Index() {
                   class="block w-full border-2 px-4 py-2 rounded-lg bg-gray-600 text-white font-bold tracking-wider hover:bg-gray-700 focus:outline-none"
                   type="submit"
                 >
-                  Sign In
+                  Login
                 </button>
               </div>
             </form>

@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import img1 from "../public/assets/1.jpg";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
-export default function Post({ post }) {
-  const router = useRouter()
-  
+export default function Post({ post, isDetailed }) {
+  const router = useRouter();
+
+  console.log("isDetailed??", isDetailed, Boolean(isDetailed));
   const handlePostClick = () => {
-    router.push(`/post/${post.id}`)
-  }
+    router.push(`/post/${post.id}`);
+  };
   return (
     <section onClick={handlePostClick}>
       <div className="w-full">
@@ -38,12 +39,15 @@ export default function Post({ post }) {
 
                     <!-- POST CONTENT --> */}
 
-            <div className="px-4 py-2 font-bold text-justify uppercase">{post.title}</div>
+            <div className="px-4 py-2 font-bold text-justify uppercase">
+              {post.title}
+            </div>
+            {isDetailed ? <div>{post.body}</div> : null}
             {/* <!-- END POST CONTENT -->
 
                     <!-- POST IMAGE --> */}
             <div className="py-2">
-              <Image src={img1} alt="Post image" className="h-96"/>
+              <Image src={img1} alt="Post image" className="h-96" />
             </div>
             {/* <!-- END POST IMAGE -->
 
@@ -54,9 +58,7 @@ export default function Post({ post }) {
                   <span className="ml-2 text-gray-500 dark:text-dark-txt">
                     {post.reactions}
                   </span>
-                  
                 </div>
-                
               </div>
             </div>
             {/* <!-- END POST REACT -->

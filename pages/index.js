@@ -1,22 +1,23 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import MainLayout from "../components/layout/MainLayout";
 import Post from "../components/Post";
 import Login from "./login";
 import post from "./post";
 
 export default function Home({ posts }) {
-  const [loggedIn, setLoggedIn] = useState(true);
+  
+  const is_auth = useSelector((state) => state.authData.is_authenticated);
   return (
     <>
-      {loggedIn ? (
-        <MainLayout>
+      (
+      {is_auth ?<MainLayout>
           {posts.map((post) => (
-            <Post post={post} />
+            <Post post={post} isDetailed={false} />
           ))}
-        </MainLayout>
-      ) : (
-        <Login />
-      )}
+        </MainLayout>: <Login/>
+      }
+      )
     </>
   );
 }
