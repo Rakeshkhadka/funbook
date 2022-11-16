@@ -6,10 +6,22 @@ import { useRouter } from "next/router";
 
 export default function Post({ post, isDetailed }) {
   const router = useRouter();
+  const [user, setUser] = useState("Loading");
 
   console.log("isDetailed??", isDetailed, Boolean(isDetailed));
   const handlePostClick = () => {
     router.push(`/post/${post.id}`);
+  };
+  const getUserName = (uid) => {
+    (async () => {
+      const res = await fetch(`https://dummyjson.com/users/${uid}`);
+      if (res.status == 200) {
+        const mydata = await res.json();
+        console.log(res, "name:", mydata.firstName);
+        setUser(mydata.firstName + " " + mydata.lastName);
+      }
+    })();
+    return user;
   };
   return (
     <section onClick={handlePostClick}>
@@ -27,7 +39,9 @@ export default function Post({ post, isDetailed }) {
                   <span className="absolute right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full top-3/4"></span>
                 </div>
                 <div>
-                  <div className="font-semibold">John Doe</div>
+                  <div className="font-semibold">
+                    {getUserName(post.userId)}
+                  </div>
                   <span className="text-sm text-gray-500">38m</span>
                 </div>
               </div>
