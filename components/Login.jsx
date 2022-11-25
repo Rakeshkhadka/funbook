@@ -36,7 +36,7 @@ export default function Index() {
       dispatch(setAuthentication(true))
       dispatch(setUser(userData))
       notify()
-      router.push(`/`);
+      router.push(``);
     }
   };
   //   const navigate = useNavigate();
