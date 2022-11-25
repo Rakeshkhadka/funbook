@@ -12,17 +12,17 @@ export default function Post({ post, isDetailed }) {
   const handlePostClick = () => {
     router.push(`/post/${post.id}`);
   };
-  const getUserName = (uid) => {
-    (async () => {
-      const res = await fetch(`https://dummyjson.com/users/${uid}`);
-      if (res.status == 200) {
-        const mydata = await res.json();
-        console.log(res, "name:", mydata.firstName);
-        setUser(mydata.firstName + " " + mydata.lastName);
-      }
-    })();
-    return user;
-  };
+  // const getUserName = (uid) => {
+  //   (async () => {
+  //     const res = await fetch(`https://dummyjson.com/users/${uid}`);
+  //     if (res.status == 200) {
+  //       const mydata = await res.json();
+  //       console.log(res, "name:", mydata.firstName);
+  //       setUser(mydata.firstName + " " + mydata.lastName);
+  //     }
+  //   })();
+  //   return user;
+  // };
   return (
     <section onClick={handlePostClick}>
       <div className="w-full">
